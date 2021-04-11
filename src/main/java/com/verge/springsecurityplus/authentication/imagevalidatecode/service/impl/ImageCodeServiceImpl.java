@@ -1,14 +1,15 @@
-package com.verge.springsecurityplus.authentication.validatecode.service.impl;
+package com.verge.springsecurityplus.authentication.imagevalidatecode.service.impl;
 
-import com.verge.springsecurityplus.authentication.validatecode.service.ImageCodeService;
+import com.verge.springsecurityplus.authentication.imagevalidatecode.properties.ImageValidateCodeProperties;
+import com.verge.springsecurityplus.authentication.imagevalidatecode.service.ImageCodeService;
 import com.verge.springsecurityplus.constant.RedisConstant;
+import com.verge.springsecurityplus.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,12 +19,17 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class ImageCodeServiceImpl implements ImageCodeService {
+
+    @Autowired
+    private SecurityProperties properties;
+
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
     @Override
     public BufferedImage generateImageCode(String uuid) {
-        int width = 60;
-        int height = 20;
+        int width = properties.getImageValidateCode().getImage().getWidth();
+        int height = properties.getImageValidateCode().getImage().getHeight();
+
         BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
         //生成随机验证码，字符从chars中选取，chars可随意定义
@@ -56,7 +62,8 @@ public class ImageCodeServiceImpl implements ImageCodeService {
         g.drawString(""+rands[3], 46, 16);
 
         String code = String.copyValueOf(rands);
-        redisTemplate.opsForValue().set(RedisConstant.UUID_CODE+uuid, code, 6000, TimeUnit.SECONDS);
+        int expireIn = properties.getImageValidateCode().getExpireIn();
+        redisTemplate.opsForValue().set(RedisConstant.UUID_CODE+uuid, code, expireIn, TimeUnit.SECONDS);
 
         return image;
     }

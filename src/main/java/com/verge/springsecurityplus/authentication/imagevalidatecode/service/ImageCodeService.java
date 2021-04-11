@@ -1,6 +1,5 @@
-package com.verge.springsecurityplus.authentication.validatecode.service;
+package com.verge.springsecurityplus.authentication.imagevalidatecode.service;
 
-import com.verge.springsecurityplus.authentication.validatecode.dto.ImageCode;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;

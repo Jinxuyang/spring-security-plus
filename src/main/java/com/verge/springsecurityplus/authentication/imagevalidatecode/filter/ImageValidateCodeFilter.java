@@ -1,17 +1,17 @@
-package com.verge.springsecurityplus.authentication.validatecode.filter;
+package com.verge.springsecurityplus.authentication.imagevalidatecode.filter;
 
-import com.verge.springsecurityplus.authentication.validatecode.dto.ImageCode;
-import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.constant.RedisConstant;
 import com.verge.springsecurityplus.exception.ValidateCodeException;
+import com.verge.springsecurityplus.properties.SecurityProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,16 +26,38 @@ import java.io.IOException;
  * @Version 1.0
  */
 @Component
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ImageValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
+    @Autowired
+    private SecurityProperties properties;
+
+    private String[] urls;
+
+    @Override
+    public void afterPropertiesSet() throws ServletException {
+        super.afterPropertiesSet();
+        String url = properties.getImageValidateCode().getUrl();
+        urls = StringUtils.splitByWholeSeparator(url,",");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if ("/login".equals(request.getRequestURI()) && "POST".equals(request.getMethod())){
+        String method = properties.getImageValidateCode().getMethod();
+
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+        boolean matched = false;
+        for (String url : urls) {
+            if (pathMatcher.match(url,request.getRequestURI())){
+                matched = true;
+            }
+        }
+
+        if (matched && method.equals(request.getMethod())){
             try {
                 validate(request);
             } catch (ValidateCodeException e){

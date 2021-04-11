@@ -1,7 +1,7 @@
 package com.verge.springsecurityplus.config;
 
 
-import com.verge.springsecurityplus.authentication.validatecode.filter.ValidateCodeFilter;
+import com.verge.springsecurityplus.authentication.imagevalidatecode.filter.ImageValidateCodeFilter;
 import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.component.RestfulAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private ValidateCodeFilter validateCodeFilter;
+    private ImageValidateCodeFilter imageValidateCodeFilter;
 
     @Autowired
     private RestfulAuthenticationFailureHandler restfulAuthenticationFailureHandler;
@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        validateCodeFilter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class);
+        imageValidateCodeFilter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
+        http.addFilterBefore(imageValidateCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.formLogin()
                 .loginProcessingUrl("/login")
                 .successHandler(restfulAuthenticationSuccessHandler)
