@@ -1,6 +1,6 @@
 package com.verge.springsecurityplus.authentication.imagevalidatecode.controller;
 
-import com.verge.springsecurityplus.authentication.imagevalidatecode.service.ImageCodeService;
+import com.verge.springsecurityplus.authentication.imagevalidatecode.component.ImageValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class ValidateCodeController {
 
     @Autowired
-    private ImageCodeService imageCodeService;
+    private ImageValidateCodeGenerator generator;
 
     /**
      * 获取图形验证码的图
@@ -31,7 +31,7 @@ public class ValidateCodeController {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
 
-        BufferedImage image = imageCodeService.generateImageCode(uuid);
+        BufferedImage image = generator.generateImageCode(uuid);
 
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);

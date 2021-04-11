@@ -4,4 +4,3 @@ spring:
   security-plus:
     image-validate-code:
       expire-in: 600
-      url: /login,/loguasd,/asdasd

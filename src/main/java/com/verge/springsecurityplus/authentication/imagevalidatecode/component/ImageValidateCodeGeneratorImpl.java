@@ -1,7 +1,6 @@
-package com.verge.springsecurityplus.authentication.imagevalidatecode.service.impl;
+package com.verge.springsecurityplus.authentication.imagevalidatecode.component;
 
-import com.verge.springsecurityplus.authentication.imagevalidatecode.properties.ImageValidateCodeProperties;
-import com.verge.springsecurityplus.authentication.imagevalidatecode.service.ImageCodeService;
+import com.verge.springsecurityplus.authentication.imagevalidatecode.component.ImageValidateCodeGenerator;
 import com.verge.springsecurityplus.constant.RedisConstant;
 import com.verge.springsecurityplus.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,17 @@ import java.util.concurrent.TimeUnit;
  * @Date 2021/4/9 12:53
  * @Version 1.0
  */
-@Service
-public class ImageCodeServiceImpl implements ImageCodeService {
+public class ImageValidateCodeGeneratorImpl implements ImageValidateCodeGenerator {
 
-    @Autowired
     private SecurityProperties properties;
 
-    @Autowired
     private RedisTemplate<String,Object> redisTemplate;
+
+    public ImageValidateCodeGeneratorImpl(SecurityProperties properties, RedisTemplate<String, Object> redisTemplate) {
+        this.properties = properties;
+        this.redisTemplate = redisTemplate;
+    }
+
     @Override
     public BufferedImage generateImageCode(String uuid) {
         int width = properties.getImageValidateCode().getImage().getWidth();
@@ -66,5 +68,13 @@ public class ImageCodeServiceImpl implements ImageCodeService {
         redisTemplate.opsForValue().set(RedisConstant.UUID_CODE+uuid, code, expireIn, TimeUnit.SECONDS);
 
         return image;
+    }
+
+    public void setProperties(SecurityProperties properties) {
+        this.properties = properties;
+    }
+
+    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 }

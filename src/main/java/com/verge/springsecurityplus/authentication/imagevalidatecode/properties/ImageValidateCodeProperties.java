@@ -8,7 +8,7 @@ package com.verge.springsecurityplus.authentication.imagevalidatecode.properties
 public class ImageValidateCodeProperties {
     private ImageProperties image = new ImageProperties();
     private int expireIn = 600;
-    private String url = "/login";
+    private String url = "";
     private String method = "POST";
 
     public String getUrl() {
