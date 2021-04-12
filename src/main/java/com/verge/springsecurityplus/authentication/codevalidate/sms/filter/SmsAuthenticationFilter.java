@@ -2,8 +2,8 @@
 package com.verge.springsecurityplus.authentication.codevalidate.sms.filter;
 
 import com.verge.springsecurityplus.authentication.codevalidate.sms.token.SmsAuthenticationToken;
+import com.verge.springsecurityplus.properties.SecurityProperties;
 import org.springframework.lang.Nullable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    public static final String MOBILE_KEY = "mobile";
 
+
+    public static final String MOBILE_KEY = "mobile";
     public static final String CODE_KEY = "code";
 
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/mobile", "POST");
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("login", "POST");
 
     private String mobileParameter = MOBILE_KEY;
-
     private String codeParameter = CODE_KEY;
 
     private boolean postOnly = true;
@@ -52,7 +52,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
         mobile = (mobile != null) ? mobile : "";
         mobile = mobile.trim();
 
-        String code = obtainMobile(request);
+        String code = obtainCode(request);
         code = (code != null) ? code : "";
         code = code.trim();
 
@@ -66,7 +66,6 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
     /**
      * 从request中获取手机号
      * @param request 请求信息
-     * @return
      */
 
     @Nullable

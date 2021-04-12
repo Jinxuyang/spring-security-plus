@@ -8,6 +8,7 @@ package com.verge.springsecurityplus.authentication.codevalidate.sms.properties;
 public class SmsValidateCodeProperties {
     int length = 4;
     int expireIn = 60;
+    String url = "/login/mobile";
 
     public int getLength() {
         return length;
@@ -23,5 +24,13 @@ public class SmsValidateCodeProperties {
 
     public void setExpireIn(int expireIn) {
         this.expireIn = expireIn;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
