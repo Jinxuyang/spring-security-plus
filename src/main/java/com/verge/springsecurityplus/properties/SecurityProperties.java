@@ -1,7 +1,7 @@
 package com.verge.springsecurityplus.properties;
 
-import com.verge.springsecurityplus.authentication.image.properties.ImageValidateCodeProperties;
-import com.verge.springsecurityplus.authentication.sms.properties.SmsValidateCodeProperties;
+import com.verge.springsecurityplus.authentication.codevalidate.image.properties.ImageValidateCodeProperties;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.properties.SmsValidateCodeProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

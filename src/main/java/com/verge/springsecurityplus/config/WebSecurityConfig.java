@@ -1,9 +1,9 @@
 package com.verge.springsecurityplus.config;
 
 
-import com.verge.springsecurityplus.authentication.image.filter.ImageValidateCodeFilter;
-import com.verge.springsecurityplus.authentication.sms.component.TestUserDetailService;
-import com.verge.springsecurityplus.authentication.sms.config.SmsAuthenticationSecurityConfig;
+import com.verge.springsecurityplus.authentication.codevalidate.image.filter.ImageValidateCodeFilter;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.component.TestUserDetailService;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.config.SmsAuthenticationSecurityConfig;
 import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.component.RestfulAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
