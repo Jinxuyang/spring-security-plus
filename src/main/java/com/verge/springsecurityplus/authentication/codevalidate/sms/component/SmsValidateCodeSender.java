@@ -8,5 +8,5 @@ import javax.naming.AuthenticationException;
  * @Version 1.0
  */
 public interface SmsValidateCodeSender {
-    boolean send(String mobile,String code) throws AuthenticationException;
+    void send(String mobile, String code) throws AuthenticationException;
 }

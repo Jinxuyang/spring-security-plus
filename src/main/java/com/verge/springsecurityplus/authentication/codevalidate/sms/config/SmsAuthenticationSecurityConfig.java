@@ -1,11 +1,13 @@
 package com.verge.springsecurityplus.authentication.codevalidate.sms.config;
 
-import com.verge.springsecurityplus.authentication.codevalidate.sms.component.impl.SmsAuthenticationProvider;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.component.impl.DefaultUserDetailsServicePlus;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.provider.SmsAuthenticationProvider;
 import com.verge.springsecurityplus.authentication.codevalidate.sms.filter.SmsAuthenticationFilter;
 import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.component.RestfulAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,11 +29,14 @@ public class SmsAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
     private RestfulAuthenticationFailureHandler failureHandler;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private DefaultUserDetailsServicePlus userDetailsService;
+
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
         SmsAuthenticationFilter filter = new SmsAuthenticationFilter();
         filter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         filter.setAuthenticationSuccessHandler(successHandler);
@@ -39,6 +44,7 @@ public class SmsAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
 
         SmsAuthenticationProvider provider = new SmsAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
+        provider.setRedisTemplate(redisTemplate);
 
         http.authenticationProvider(provider)
                 .addFilterAfter(filter, UsernamePasswordAuthenticationFilter.class);

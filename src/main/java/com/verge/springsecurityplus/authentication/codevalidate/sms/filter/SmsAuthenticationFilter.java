@@ -1,7 +1,7 @@
 
 package com.verge.springsecurityplus.authentication.codevalidate.sms.filter;
 
-import com.verge.springsecurityplus.authentication.codevalidate.sms.component.impl.SmsAuthenticationToken;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.token.SmsAuthenticationToken;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -22,11 +22,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = "mobile";
+    public static final String MOBILE_KEY = "mobile";
+
+    public static final String CODE_KEY = "code";
 
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/mobile", "POST");
 
-    private String mobileParameter = SPRING_SECURITY_FORM_MOBILE_KEY;
+    private String mobileParameter = MOBILE_KEY;
+
+    private String codeParameter = CODE_KEY;
 
     private boolean postOnly = true;
 
@@ -34,9 +38,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
     }
 
-    public SmsAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
-    }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -50,7 +52,11 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
         mobile = (mobile != null) ? mobile : "";
         mobile = mobile.trim();
 
-        SmsAuthenticationToken authRequest = new SmsAuthenticationToken(mobile);
+        String code = obtainMobile(request);
+        code = (code != null) ? code : "";
+        code = code.trim();
+
+        SmsAuthenticationToken authRequest = new SmsAuthenticationToken(mobile, code);
 
         setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
@@ -66,6 +72,11 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Nullable
     protected String obtainMobile(HttpServletRequest request) {
         return request.getParameter(this.mobileParameter);
+    }
+
+    @Nullable
+    protected String obtainCode(HttpServletRequest request) {
+        return request.getParameter(this.codeParameter);
     }
 
 

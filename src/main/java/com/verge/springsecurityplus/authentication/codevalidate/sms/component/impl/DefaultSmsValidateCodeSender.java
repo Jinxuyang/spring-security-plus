@@ -12,13 +12,12 @@ import javax.naming.AuthenticationException;
 public class DefaultSmsValidateCodeSender implements SmsValidateCodeSender {
 
     @Override
-    public boolean send(String mobile, String code) throws AuthenticationException {
+    public void send(String mobile, String code) throws AuthenticationException {
 
         /*
         * 发送逻辑
         * */
         System.out.println("向" + mobile + "发送短信, 验证码为：" + code);
 
-        return true;
     }
 }

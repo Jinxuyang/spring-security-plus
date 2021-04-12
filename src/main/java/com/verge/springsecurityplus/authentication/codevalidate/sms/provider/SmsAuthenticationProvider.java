@@ -1,11 +1,15 @@
-package com.verge.springsecurityplus.authentication.codevalidate.sms.component.impl;
+package com.verge.springsecurityplus.authentication.codevalidate.sms.provider;
 
+import com.verge.springsecurityplus.authentication.codevalidate.sms.component.UserDetailsPlus;
 import com.verge.springsecurityplus.authentication.codevalidate.sms.component.UserDetailsServicePlus;
+import com.verge.springsecurityplus.authentication.codevalidate.sms.token.SmsAuthenticationToken;
+import com.verge.springsecurityplus.constant.RedisConstant;
+import com.verge.springsecurityplus.exception.ValidateCodeException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @Author Verge
@@ -13,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @Version 1.0
  */
 public class SmsAuthenticationProvider implements AuthenticationProvider {
+
     private UserDetailsServicePlus userDetailsService;
+
     private RedisTemplate<String,Object> redisTemplate;
 
     /**
@@ -27,18 +33,21 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         SmsAuthenticationToken authenticationToken = (SmsAuthenticationToken) authentication;
 
         // 根据手机号读取用户信息
-        //TestUserDetail user = (TestUserDetail) userDetailsService.loadUserByMobile((String) authentication.getPrincipal());
+        UserDetailsPlus user = userDetailsService.loadUserByMobile((String) authentication.getPrincipal());
 
-        //String mobile = user.getMobile();
+        String mobile = (String) authenticationToken.getPrincipal();
 
-        //redisTemplate.opsForValue()
-        /*
-        *  校验逻辑：
-        *   成功返回经过校验的Authentication,并复制原authentication的Details信息
-        *   否则抛出AuthenticationException
-        *
-        * */
-        return null;
+        String code = (String) redisTemplate.opsForValue().get(RedisConstant.MOBILE_CODE+mobile);
+
+        if (code == null){
+            throw new ValidateCodeException("校验码不存在");
+        }
+
+        if (!authentication.getCredentials().equals(code)){
+            throw new ValidateCodeException("校验码不匹配");
+        }
+
+        return new SmsAuthenticationToken(mobile,user.getAuthorities(),"");
     }
 
     /**
@@ -53,4 +62,11 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
     }
 
 
+    public void setUserDetailsService(UserDetailsServicePlus userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 }
