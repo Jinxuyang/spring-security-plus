@@ -23,7 +23,7 @@ public class DefaultImageValidateCodeGenerator implements ImageValidateCodeGener
     }
 
     @Override
-    public ImageCode generateImageCode(String uuid) {
+    public ImageCode generate(String uuid) {
         int width = properties.getImageValidateCode().getImage().getWidth();
         int height = properties.getImageValidateCode().getImage().getHeight();
 

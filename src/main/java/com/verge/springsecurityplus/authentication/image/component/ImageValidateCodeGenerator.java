@@ -10,5 +10,5 @@ import java.awt.image.BufferedImage;
  * @Version 1.0
  */
 public interface ImageValidateCodeGenerator {
-    ImageCode generateImageCode(String uuid);
+    ImageCode generate(String uuid);
 }

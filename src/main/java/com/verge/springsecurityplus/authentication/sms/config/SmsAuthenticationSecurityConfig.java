@@ -1,6 +1,6 @@
 package com.verge.springsecurityplus.authentication.sms.config;
 
-import com.verge.springsecurityplus.authentication.sms.component.SmsAuthenticationProvider;
+import com.verge.springsecurityplus.authentication.sms.component.impl.SmsAuthenticationProvider;
 import com.verge.springsecurityplus.authentication.sms.filter.SmsAuthenticationFilter;
 import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.component.RestfulAuthenticationSuccessHandler;

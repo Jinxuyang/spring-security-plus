@@ -1,4 +1,4 @@
-package com.verge.springsecurityplus.authentication.sms.component;
+package com.verge.springsecurityplus.authentication.sms.component.impl;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

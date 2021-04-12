@@ -1,7 +1,7 @@
 
 package com.verge.springsecurityplus.authentication.sms.filter;
 
-import com.verge.springsecurityplus.authentication.sms.component.SmsAuthenticationToken;
+import com.verge.springsecurityplus.authentication.sms.component.impl.SmsAuthenticationToken;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;

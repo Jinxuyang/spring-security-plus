@@ -1,7 +1,5 @@
 package com.verge.springsecurityplus.authentication.sms.component;
 
-import com.verge.springsecurityplus.authentication.sms.dto.SmsCode;
-
 import javax.naming.AuthenticationException;
 
 /**
@@ -10,5 +8,5 @@ import javax.naming.AuthenticationException;
  * @Version 1.0
  */
 public interface SmsValidateCodeSender {
-    SmsCode send(String mobile) throws AuthenticationException;
+    boolean send(String mobile,String code) throws AuthenticationException;
 }
