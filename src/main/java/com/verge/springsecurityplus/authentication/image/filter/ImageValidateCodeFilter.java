@@ -1,4 +1,4 @@
-package com.verge.springsecurityplus.authentication.imagevalidatecode.filter;
+package com.verge.springsecurityplus.authentication.image.filter;
 
 import com.verge.springsecurityplus.constant.RedisConstant;
 import com.verge.springsecurityplus.exception.ValidateCodeException;

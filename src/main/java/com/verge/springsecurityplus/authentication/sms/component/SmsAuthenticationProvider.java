@@ -1,5 +1,6 @@
 package com.verge.springsecurityplus.authentication.sms.component;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @Version 1.0
  */
 public class SmsAuthenticationProvider implements AuthenticationProvider {
-    private UserDetailsService userDetailsService;
+    private UserDetailsServicePlus userDetailsService;
+    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 身份认证逻辑
@@ -22,10 +24,14 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        SmsAuthenticationToken authenticationToken = (SmsAuthenticationToken) userDetailsService;
+        SmsAuthenticationToken authenticationToken = (SmsAuthenticationToken) authentication;
 
         // 根据手机号读取用户信息
-        UserDetails user = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());
+        TestUserDetail user = (TestUserDetail) userDetailsService.loadUserByMobile((String) authentication.getPrincipal());
+
+        String mobile = user.getMobile();
+
+        redisTemplate.opsForValue()
         /*
         *  校验逻辑：
         *   成功返回经过校验的Authentication,并复制原authentication的Details信息
@@ -44,5 +50,9 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         //判断authentication是不是SmsAuthenticationToken这个类型
         return SmsAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 }

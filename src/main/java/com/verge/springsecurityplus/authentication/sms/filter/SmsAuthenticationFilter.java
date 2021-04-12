@@ -1,4 +1,4 @@
-/*
+
 package com.verge.springsecurityplus.authentication.sms.filter;
 
 import com.verge.springsecurityplus.authentication.sms.component.SmsAuthenticationToken;
@@ -13,16 +13,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-*/
+
 /**
  * 模仿UsernamePasswordAuthenticationFilter
  * @Author Verge
  * @Date 2021/4/8 20:38
  * @Version 1.0
- *//*
+ */
 
 public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = "username";
+    public static final String SPRING_SECURITY_FORM_MOBILE_KEY = "mobile";
 
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/mobile", "POST");
 
@@ -56,24 +56,24 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 
-    */
-/**
+
+    /**
      * 从request中获取手机号
      * @param request 请求信息
      * @return
-     *//*
+     */
 
     @Nullable
     protected String obtainMobile(HttpServletRequest request) {
         return request.getParameter(this.mobileParameter);
     }
 
-    */
-/**
+
+    /**
      * 将请求信息存入SmsAuthenticationToken
      * @param request 请求信息
      * @param authRequest SmsAuthenticationToken
-     *//*
+     */
 
     protected void setDetails(HttpServletRequest request, SmsAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
@@ -87,4 +87,4 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
         this.mobileParameter = mobileParameter;
     }
 }
-*/
+

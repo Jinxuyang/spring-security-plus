@@ -1,4 +1,4 @@
-package com.verge.springsecurityplus.authentication.imagevalidatecode.properties;
+package com.verge.springsecurityplus.authentication.image.properties;
 
 /**
  * @Author Verge

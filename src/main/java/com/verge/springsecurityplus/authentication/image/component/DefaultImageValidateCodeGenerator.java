@@ -1,11 +1,9 @@
-package com.verge.springsecurityplus.authentication.imagevalidatecode.component;
+package com.verge.springsecurityplus.authentication.image.component;
 
-import com.verge.springsecurityplus.authentication.imagevalidatecode.component.ImageValidateCodeGenerator;
+import com.verge.springsecurityplus.authentication.image.dto.ImageCode;
 import com.verge.springsecurityplus.constant.RedisConstant;
 import com.verge.springsecurityplus.properties.SecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,19 +14,16 @@ import java.util.concurrent.TimeUnit;
  * @Date 2021/4/9 12:53
  * @Version 1.0
  */
-public class ImageValidateCodeGeneratorImpl implements ImageValidateCodeGenerator {
+public class DefaultImageValidateCodeGenerator implements ImageValidateCodeGenerator {
 
     private SecurityProperties properties;
 
-    private RedisTemplate<String,Object> redisTemplate;
-
-    public ImageValidateCodeGeneratorImpl(SecurityProperties properties, RedisTemplate<String, Object> redisTemplate) {
+    public DefaultImageValidateCodeGenerator(SecurityProperties properties) {
         this.properties = properties;
-        this.redisTemplate = redisTemplate;
     }
 
     @Override
-    public BufferedImage generateImageCode(String uuid) {
+    public ImageCode generateImageCode(String uuid) {
         int width = properties.getImageValidateCode().getImage().getWidth();
         int height = properties.getImageValidateCode().getImage().getHeight();
 
@@ -64,17 +59,11 @@ public class ImageValidateCodeGeneratorImpl implements ImageValidateCodeGenerato
         g.drawString(""+rands[3], 46, 16);
 
         String code = String.copyValueOf(rands);
-        int expireIn = properties.getImageValidateCode().getExpireIn();
-        redisTemplate.opsForValue().set(RedisConstant.UUID_CODE+uuid, code, expireIn, TimeUnit.SECONDS);
-
-        return image;
+        return new ImageCode(image,code);
     }
 
     public void setProperties(SecurityProperties properties) {
         this.properties = properties;
     }
 
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 }

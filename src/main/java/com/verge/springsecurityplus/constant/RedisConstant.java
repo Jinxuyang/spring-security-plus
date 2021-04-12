@@ -7,4 +7,5 @@ package com.verge.springsecurityplus.constant;
  */
 public class RedisConstant {
     public static final String UUID_CODE = "VALIDATE:IMAGE_CODE:UUID_CODE:";
+    public static final String MOBILE_CODE = "VALIDATE:SMS_CODE:MOBILE_CODE:";
 }
