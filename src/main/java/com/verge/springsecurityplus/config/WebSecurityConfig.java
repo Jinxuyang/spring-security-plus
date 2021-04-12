@@ -2,7 +2,6 @@ package com.verge.springsecurityplus.config;
 
 
 import com.verge.springsecurityplus.authentication.codevalidate.image.filter.ImageValidateCodeFilter;
-import com.verge.springsecurityplus.authentication.codevalidate.sms.component.TestUserDetailService;
 import com.verge.springsecurityplus.authentication.codevalidate.sms.config.SmsAuthenticationSecurityConfig;
 import com.verge.springsecurityplus.component.RestfulAuthenticationFailureHandler;
 import com.verge.springsecurityplus.component.RestfulAuthenticationSuccessHandler;
@@ -31,9 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SmsAuthenticationSecurityConfig smsAuthenticationSecurityConfig;
 
-    @Autowired
-    private TestUserDetailService testUserDetailService;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         imageValidateCodeFilter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
@@ -47,6 +43,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.csrf().disable();
         http.apply(smsAuthenticationSecurityConfig);
-        http.userDetailsService(testUserDetailService);
     }
 }

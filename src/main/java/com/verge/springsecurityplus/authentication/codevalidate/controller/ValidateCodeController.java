@@ -77,10 +77,8 @@ public class ValidateCodeController {
         redisTemplate.opsForValue().set(RedisConstant.MOBILE_CODE+mobile, smsCode.getCode(), expireIn, TimeUnit.SECONDS);
 
         smsValidateCodeSender.send(mobile, smsCode.getCode());
-        if (smsCode.isSuccess()){
-            return R.ok("发送成功");
-        } else {
-            return R.error("发送失败");
-        }
+
+        return R.ok("发送成功");
+
     }
 }
