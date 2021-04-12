@@ -27,6 +27,6 @@ public class DefaultSmsValidateCodeGenerator implements SmsValidateCodeGenerator
         for (int i = 0; i < length; i++) {
             buffer.append(chars[random.nextInt(10)]);
         }
-        return new SmsCode(buffer.toString(),true);
+        return new SmsCode(buffer.toString());
     }
 }

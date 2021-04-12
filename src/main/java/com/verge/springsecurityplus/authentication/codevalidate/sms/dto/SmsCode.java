@@ -1,5 +1,7 @@
 package com.verge.springsecurityplus.authentication.codevalidate.sms.dto;
 
+
+
 /**
  * @Author Verge
  * @Date 2021/4/11 17:06
@@ -8,11 +10,8 @@ package com.verge.springsecurityplus.authentication.codevalidate.sms.dto;
 public class SmsCode {
     private String code;
 
-    private boolean isSuccess;
-
-    public SmsCode(String code, boolean isSuccess) {
+    public SmsCode(String code) {
         this.code = code;
-        this.isSuccess = isSuccess;
     }
 
     public String getCode() {
@@ -23,11 +22,4 @@ public class SmsCode {
         this.code = code;
     }
 
-    public boolean isSuccess() {
-        return isSuccess;
-    }
-
-    public void setSuccess(boolean success) {
-        isSuccess = success;
-    }
 }
